@@ -1,0 +1,180 @@
+import java.io.*;
+import java.util.*;
+class A
+{
+	
+	Scanner sc=new Scanner(System.in);
+	void line_Space(int n)
+	{
+		for(int i=0;i<n;i++)
+			System.out.println();
+	}
+	void buffer()
+	{
+		for(int i=0;i<80;i++)
+		{
+			System.out.print("=");
+			try
+			{
+				Thread.sleep(50);
+			}
+			catch(InterruptedException e){}
+		}
+	}
+	int disp()
+	{
+		Scanner sc=new Scanner(System.in);
+		int choice=0;
+		String b;
+		for(int i=0;i<1;i--)
+		{
+			System.out.println("               _____________________________________________");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |	    ENTER YOUR CHOICE:                      |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |	      1) SIGN IN                            |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |       2) SIGN UP                            |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |                                             |");
+			System.out.println("              |	   ENTER 1/2 :                              |");
+			System.out.println("              |_____________________________________________|");
+			System.out.print  ("                    ");
+			choice=sc.nextInt();
+			if(choice==1||choice==2)break;
+			else
+				System.out.println("Invalid Choice");
+			System.out.println("  \n\n\n\nPress Enter To Continue");
+			b=sc.next();
+		}
+		buffer();
+		return choice;
+	}
+	void sign_In()throws IOException
+	{
+		File f= new File("num.xyz");
+		File f1= new File("pass.dat");
+		DataInputStream dis = new DataInputStream(new FileInputStream(f));
+		DataInputStream disp = new DataInputStream(new FileInputStream(f1));
+		String uname="",pword="",u="",p="",buff="";
+		int x=0;
+		line_Space(25);
+		for(int i=0;i<1;i--)
+		{
+			x=0;
+			System.out.print("\tEnter Username : ");uname=sc.next();
+			try
+			{
+				while(true)
+				{
+					u=dis.readUTF();
+					p=disp.readUTF();
+					if(uname.equals(u))
+					{
+						x++;
+						break;
+					}
+				}
+			}
+			catch(EOFException e){}
+			if (x>=1)
+				break;
+			else
+			{
+				System.out.println("Username doesnot exists.\n\n");
+			}
+		}
+		for(int i=0;i<1;i--)
+		{
+			System.out.print("\tEnter Password : ");pword=sc.next();
+			if(pword.equals(p))
+			{
+				line_Space(25);
+				System.out.println("CONGRATS, YOU ARE SUCCESSFULLY LOGGED IN");
+				line_Space(10);
+				System.out.println("Press Enter to continue");
+				buff=sc.next();
+				break;
+			}
+			else
+			{
+				System.out.println("Inappropriate Password");
+			}
+		}
+		dis.close();
+		disp.close();
+	}
+	void sign_Up()throws IOException
+	{
+		File f= new File("num.xyz");
+		File f1= new File("pass.dat");
+		DataInputStream dis = new DataInputStream(new FileInputStream(f));
+		DataOutputStream dos = new DataOutputStream(new FileOutputStream(f,true));
+		DataOutputStream dosp = new DataOutputStream(new FileOutputStream(f1,true));
+		String uname="",pword="",u="",p="",buff="";
+		int x=0;
+		line_Space(25);
+		for(int i=0;i<1;i--)
+		{
+			x=0;
+			System.out.print("\tEnter Username : ");uname=sc.next();
+			try
+			{
+				while(true)
+				{
+					u=dis.readUTF();
+					if(uname.equals(u))
+					{
+						x++;
+						break;
+					}
+				}
+			}
+			catch(EOFException e){}
+			if (x==0)
+			{	
+				dos.writeUTF(uname);	
+				break;
+			}
+			else
+				System.out.println("Username already exists.\n\n");
+		}
+		System.out.print("\tEnter Password : ");pword=sc.next();
+		dosp.writeUTF(pword);
+		line_Space(3);
+		buffer();
+		line_Space(25);
+		System.out.println("CONGRATS!! YOUR ACCOUNT IS REGISTERED");
+		line_Space(10);
+		System.out.println("Press Enter to continue");
+		buff=sc.next();
+		sign_In();
+		dis.close();
+		dos.close();
+		dosp.close();
+	}
+	public static void main(String arg[])throws IOException
+	{
+		
+		A ob=new A();
+		int c=ob.disp();
+		switch(c)
+		{
+			case 1:ob.sign_In();break;
+			case 2:ob.sign_Up();
+		}
+	}
+}
